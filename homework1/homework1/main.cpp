@@ -7,17 +7,13 @@
 #include "Cards.h"
 using namespace std;
 
-// Global constants (if any)
 
 
-// Non member functions declarations (if any)
 
 
-// Non member functions implementations (if any)
+int main() 
 
-
-// Stub for main
-int main() {
+{
 	/* --STATEMENTS-- */
 	return 0;
 }

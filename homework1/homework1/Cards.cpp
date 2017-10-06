@@ -290,4 +290,22 @@ bool Player::operator < (Player another)
 	return (all_cards.card_total() < another.all_cards.card_total());
 }
 
+int Player::get_money()
+{
+	return money;
+}
+void Player::win_bet(int a)
+{
+	money -= a;
+}
+void Player::lose_bet(int b)
+{
+	money += b;
+}
+
+
+void lets_play(Player you, Player dealer)
+{
+	// this will initiate game; testing branching 
+}
 
