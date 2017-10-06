@@ -239,7 +239,7 @@ double Player::card_total()
 	double total = 0;
 	for (const auto& x : myhand)
 	{
-		total = x->get_value();
+		total += x->get_value();
 	}
 	return total;
 
@@ -298,10 +298,14 @@ void Player::list_cards() // list cards in their names in spanish and english
 	}
 }
 
+///*
 void play_game()
+
 {
 	int starting_money = 0;
 	int bet = 0;
+	char another_card = 'y';
+
 	cout << "Welcome to Siete y Medio!" << endl
 		<< "Enter your starting money: ";
 	cin >> starting_money;
@@ -319,8 +323,30 @@ void play_game()
 			cin >> bet;
 		}
 
-		cout << "Your card:"  << endl;
+		cout << "Your card:" << endl;
 		you.draw_card();
+
+		while (another_card == 'y')
+		{
+			
+			cout << "Your total is " << you.card_total() << endl << ". Do you want another card (y/n)? ";
+			cin >> another_card;
+			if (another_card == 'n')
+				return;
+			else
+			{
+				cout << "New card: " << endl;
+				you.draw_card();
+				cout << "Your cards:" << endl;
+				you.list_cards();
+			}
+
+			if (you.check_lose())
+			{
+				cout << "Your total is " << you.card_total() << "You lost the round.";
+				you.lose_bet(bet);
+			}
+		}
 		
 
 
@@ -328,3 +354,4 @@ void play_game()
 }
 
 
+//*/
