@@ -229,15 +229,9 @@ bool Card::operator < (Card card2) const {
 Player class
 ************************************************* */
 
-Player::Player()
-{
-	money = 0;
-}
+Player::Player() : myhand({}), money(0) {}
 
-Player::Player(int m)
-{
-	money = m;
-}
+Player::Player(int m) : myhand({}), money(m) {}
 
 double Player::card_total()
 {
@@ -252,11 +246,13 @@ double Player::card_total()
 }
 
 
-void Player::draw_card()
+ostream& Player::draw_card(ostream& os)
 {
-	Card* newcard = new Card();
+	Card* newcard = new Card(); 
 	myhand.push_back(newcard);
-
+	os << "\t" << newcard->get_spanish_rank() << " de " << newcard->get_spanish_suit() << "\t ("
+		<< newcard->get_english_rank() << " of " << newcard->get_english_suit() << ")" << endl;
+	return os;
 }
 
 bool Player::check_lose()
@@ -300,6 +296,34 @@ void Player::list_cards() // list cards in their names in spanish and english
 		cout << x->get_spanish_rank() << " de " << x->get_spanish_suit() << "\t (" 
 			<< x->get_english_rank() << " of " << x->get_english_suit() << ")" << endl;
 	}
+}
+
+void play_game()
+{
+	int starting_money = 0;
+	int bet = 0;
+	cout << "Welcome to Siete y Medio!" << endl
+		<< "Enter your starting money: ";
+	cin >> starting_money;
+	
+	Player you (starting_money);  
+	Player dealer;
+	
+	do
+	{ 
+		cout << "You have $" << you.get_money() << ". Enter bet: ";
+		cin >> bet;
+		while (bet > you.get_money())
+		{
+			cout << "Enter a valid bet: ";
+			cin >> bet;
+		}
+
+		cout << "Your card:" << you.draw_card() << endl;
+		
+
+
+	} while (you.check_end());
 }
 
 

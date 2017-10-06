@@ -60,7 +60,7 @@ public:
 	//constructor, assigns initial value of money
 	Player(int m);
 	double card_total();
-	void draw_card();
+	ostream& draw_card(ostream& os);
 	bool check_lose(); // check if lost round (ie. card total is more than 7.5)
 	bool check_end(); // check if end whole game
 	bool operator < (Player another); // compare who won between two players based on value of cards
