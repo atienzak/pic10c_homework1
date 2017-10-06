@@ -246,13 +246,13 @@ double Player::card_total()
 }
 
 
-ostream& Player::draw_card(ostream& os)
+void Player::draw_card()
 {
 	Card* newcard = new Card(); 
 	myhand.push_back(newcard);
-	os << "\t" << newcard->get_spanish_rank() << " de " << newcard->get_spanish_suit() << "\t ("
+	cout << "\t" << newcard->get_spanish_rank() << " de " << newcard->get_spanish_suit() << "\t ("
 		<< newcard->get_english_rank() << " of " << newcard->get_english_suit() << ")" << endl;
-	return os;
+	
 }
 
 bool Player::check_lose()
@@ -319,7 +319,8 @@ void play_game()
 			cin >> bet;
 		}
 
-		cout << "Your card:" << you.draw_card() << endl;
+		cout << "Your card:"  << endl;
+		you.draw_card();
 		
 
 
