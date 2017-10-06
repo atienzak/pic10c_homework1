@@ -304,8 +304,7 @@ void Player::lose_bet(int b)
 }
 
 
-void lets_play(Player you, Player dealer)
+void round(Player& you, Player& dealer)
 {
-	// this will initiate game; testing branching 
-}
 
+}
