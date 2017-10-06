@@ -224,33 +224,6 @@ bool Card::operator < (Card card2) const {
 
 
 
-/* *************************************************
-Hand class
-************************************************* */
-
-Hand::Hand()
-{
-	myhand = {};
-}
-
-double Hand::card_total()
-{
-
-	double total;
-	for (const auto& x : myhand)
-	{
-		total = x->get_value();
-	}
-	return total;
-
-}
-
-void Hand::add_card(Card* newcard)
-{
-	myhand.push_back(newcard);
-}
-
-
 
 /* *************************************************
 Player class
@@ -266,28 +239,45 @@ Player::Player(int m)
 	money = m;
 }
 
+double Player::card_total()
+{
+
+	double total = 0;
+	for (const auto& x : myhand)
+	{
+		total = x->get_value();
+	}
+	return total;
+
+}
+
+
 void Player::draw_card()
 {
 	Card* newcard = new Card();
-	all_cards.add_card(newcard);
+	myhand.push_back(newcard);
 
 }
 
 bool Player::check_lose()
 {
-	if (all_cards.card_total() > 7.5)
+	if (card_total() > 7.5)
 		return true;
+	else
+		return false;
 }
 
 bool Player::check_end()
 {
-	if (money = 0)
+	if (money == 0)
 		return true;
+	else
+		return false;
 }
 
 bool Player::operator < (Player another)
 {
-	return (all_cards.card_total() < another.all_cards.card_total());
+	return (card_total() < another.card_total());
 }
 
 int Player::get_money()
@@ -303,8 +293,13 @@ void Player::lose_bet(int b)
 	money += b;
 }
 
-
-void round(Player& you, Player& dealer)
+void Player::list_cards() // list cards in their names in spanish and english
 {
-
+	for (const auto& x : myhand)
+	{
+		cout << x->get_spanish_rank() << " de " << x->get_spanish_suit() << "\t (" 
+			<< x->get_english_rank() << " of " << x->get_english_suit() << ")" << endl;
+	}
 }
+
+

@@ -50,19 +50,7 @@ private:
 	rank_t rank;
 };
 
-
-class Hand 
-{
-public:
-	
-	Hand();
-	double card_total();
-	void add_card(Card* newcard);
-
-private:
-	vector<Card*> myhand;
-};
-
+//consolidate Hand class into Player because it only contains a vector of Card* as a private member 
 
 class Player 
 {
@@ -71,6 +59,7 @@ public:
 	Player();
 	//constructor, assigns initial value of money
 	Player(int m);
+	double card_total();
 	void draw_card();
 	bool check_lose(); // check if lost round (ie. card total is more than 7.5)
 	bool check_end(); // check if end whole game
@@ -78,10 +67,11 @@ public:
 	int get_money();
 	void win_bet(int a);
 	void lose_bet(int b);
+	void list_cards();
 
 private:
 	int money;
-	Hand all_cards;
+	vector<Card*> myhand;
 };
 
 
