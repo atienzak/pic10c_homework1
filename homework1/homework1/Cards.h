@@ -29,17 +29,16 @@ public:
 	string get_spanish_suit() const;
 	string get_spanish_rank() const;
 
-	/*
-	These are the only functions you'll need to code
-	for this class. See the implementations of the two
-	functions above to get an idea of how to proceed.
-	*/
+	// Accessors (returns suit and rank in English)
+
 	string get_english_suit() const;
 	string get_english_rank() const;
 
 	// Converts card rank to number.
 	// The possible returns are: 1, 2, 3, 4, 5, 6, 7, 10, 11 and 12
 	int get_rank() const;
+
+	double get_value() const;
 
 	// Compare rank of two cards. E.g: Eight<Jack is true.
 	// Assume Ace is always 1. 
@@ -52,29 +51,35 @@ private:
 };
 
 
-class Hand {
+class Hand 
+{
 public:
-	// A vector of Cards
+	
 	Hand();
-
-	// You decide what functions you'll need...
+	double card_total();
+	void add_card(Card* newcard);
 
 private:
-	// You decide what fields you'll need...
+	vector<Card*> myhand;
 };
 
 
-class Player {
+class Player 
+{
 public:
-	// Constructor. 
-	//    Assigns initial amount of money
+	// default constructor
+	Player();
+	//constructor, assigns initial value of money
 	Player(int m);
-
-	// You decide what functions you'll need...
+	void draw_card();
+	bool check_lose(); // check if lost round (ie. card total is more than 7.5)
+	bool check_end(); // check if end whole game
+	bool operator < (Player another); // compare who won between two players based on value of cards
 
 private:
 	int money;
-	// You decide what extra fields (if any) you'll need...
+	Hand all_cards;
+	
 };
 
 #endif

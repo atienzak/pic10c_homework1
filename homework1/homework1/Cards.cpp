@@ -106,20 +106,109 @@ string Card::get_spanish_rank() const {
 }
 
 
-
 // Accessor: returns a string with the suit of the card in English 
-// This is just a stub! Modify it to your liking.
-string Card::get_english_suit() const {
-	return "";
+
+string Card::get_english_suit() const 
+{
+	string suitName;
+	switch (suit) {
+	case OROS:
+		suitName = "Coins";
+		break;
+	case COPAS:
+		suitName = "Cups";
+		break;
+	case ESPADAS:
+		suitName = "Swords";
+		break;
+	case BASTOS:
+		suitName = "Clubs";
+		break;
+	default: break;
+	}
+	return suitName;
 }
 
 // Accessor: returns a string with the rank of the card in English 
-// This is just a stub! Modify it to your liking.
-string Card::get_english_rank() const {
-	return "";
+
+string Card::get_english_rank() const 
+{
+	string rankName;
+	switch (rank) {
+	case AS:
+		rankName = "Ace";
+		break;
+	case DOS:
+		rankName = "Two";
+		break;
+	case TRES:
+		rankName = "Three";
+		break;
+	case CUATRO:
+		rankName = "Four";
+		break;
+	case CINCO:
+		rankName = "Five";
+		break;
+	case SEIS:
+		rankName = "Six";
+		break;
+	case SIETE:
+		rankName = "Seven";
+		break;
+	case SOTA:
+		rankName = "Jack";
+		break;
+	case CABALLO:
+		rankName = "Knight";
+		break;
+	case REY:
+		rankName = "King";
+		break;
+	default: break;
+	}
+	return rankName;
 }
 
+double Card::get_value() const
+{
+	double value = 0;
 
+	switch (rank) {
+	case AS:
+		value = 1;
+		break;
+	case DOS:
+		value = 2;
+		break;
+	case TRES:
+		value = 3;
+		break;
+	case CUATRO:
+		value = 4;
+		break;
+	case CINCO:
+		value = 5;
+		break;
+	case SEIS:
+		value = 6;
+		break;
+	case SIETE:
+		value = 7;
+		break;
+	case SOTA:
+		value = 0.5;
+		break;
+	case CABALLO:
+		value = 0.5;
+		break;
+	case REY:
+		value = 0.5;
+		break;
+	default: break;
+	}
+	return value;
+}
 
 // Assigns a numerical value to card based on rank.
 // AS=1, DOS=2, ..., SIETE=7, SOTA=10, CABALLO=11, REY=12
@@ -138,11 +227,67 @@ bool Card::operator < (Card card2) const {
 /* *************************************************
 Hand class
 ************************************************* */
-// Implemente the member functions of the Hand class here.
+
+Hand::Hand()
+{
+	myhand = {};
+}
+
+double Hand::card_total()
+{
+
+	double total;
+	for (const auto& x : myhand)
+	{
+		total = x->get_value();
+	}
+	return total;
+
+}
+
+void Hand::add_card(Card* newcard)
+{
+	myhand.push_back(newcard);
+}
 
 
 
 /* *************************************************
 Player class
 ************************************************* */
-// Implemente the member functions of the Player class here.
+
+Player::Player()
+{
+	money = 0;
+}
+
+Player::Player(int m)
+{
+	money = m;
+}
+
+void Player::draw_card()
+{
+	Card* newcard = new Card();
+	all_cards.add_card(newcard);
+
+}
+
+bool Player::check_lose()
+{
+	if (all_cards.card_total() > 7.5)
+		return true;
+}
+
+bool Player::check_end()
+{
+	if (money = 0)
+		return true;
+}
+
+bool Player::operator < (Player another)
+{
+	return (all_cards.card_total() < another.all_cards.card_total());
+}
+
+
