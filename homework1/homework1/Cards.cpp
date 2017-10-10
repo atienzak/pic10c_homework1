@@ -1,6 +1,8 @@
 #include "Cards.h"
 #include <cstdlib>
 #include <iostream>
+#include <time.h>
+#include <Windows.h>
 
 /*
 You might or might not need these two extra libraries
@@ -20,7 +22,24 @@ Most variations of Blackjack are played with
 several decks of cards at the same time.
 */
 Card::Card() {
-	int r = 1 + rand() % 4;
+	srand(time(0));
+
+	int r = 1 + rand() % 3;
+
+	if (r == 1)
+	{
+		Sleep(1000);
+	}
+	else if (r == 2)
+	{
+		Sleep(2000);
+	}
+	else
+	{
+		Sleep(3000);
+	}
+
+	r = 1 + rand() % 4;
 	switch (r) {
 	case 1: suit = OROS; break;
 	case 2: suit = COPAS; break;
@@ -233,7 +252,7 @@ Player::Player() : myhand({}), money(0) {}
 
 Player::Player(int m) : myhand({}), money(m) {}
 
-double Player::card_total()
+double Player::card_total() const
 {
 
 	double total = 0;
@@ -250,12 +269,11 @@ void Player::draw_card()
 {
 	Card* newcard = new Card(); 
 	myhand.push_back(newcard);
-	cout << "\t" << newcard->get_spanish_rank() << " de " << newcard->get_spanish_suit() << "\t ("
-		<< newcard->get_english_rank() << " of " << newcard->get_english_suit() << ")" << endl;
-	
+	//cout << "\t" << newcard->get_spanish_rank() << " de " << newcard->get_spanish_suit() << "\t ("
+		//<< newcard->get_english_rank() << " of " << newcard->get_english_suit() << ")" << endl;
 }
 
-bool Player::check_lose()
+bool Player::check_lose() const
 {
 	if (card_total() > 7.5)
 		return true;
@@ -263,7 +281,7 @@ bool Player::check_lose()
 		return false;
 }
 
-bool Player::check_end()
+bool Player::check_end() const
 {
 	if (money == 0)
 		return true;
@@ -271,34 +289,43 @@ bool Player::check_end()
 		return false;
 }
 
-bool Player::operator < (Player another)
+bool Player::operator < (Player another) const
 {
 	return (card_total() < another.card_total());
 }
 
-int Player::get_money()
+int Player::get_money() const
 {
 	return money;
 }
 void Player::win_bet(int a)
 {
-	money -= a;
+	money += a;
 }
 void Player::lose_bet(int b)
 {
-	money += b;
+	money -= b;
 }
 
-void Player::list_cards() // list cards in their names in spanish and english
+void Player::list_cards() const // list cards in their names in spanish and english
 {
 	for (const auto& x : myhand)
 	{
-		cout << x->get_spanish_rank() << " de " << x->get_spanish_suit() << "\t (" 
+		cout << "\t" << x->get_spanish_rank() << " de " << x->get_spanish_suit() << "\t (" 
 			<< x->get_english_rank() << " of " << x->get_english_suit() << ")" << endl;
 	}
 }
 
-///*
+void Player::reset_cards()
+{
+	for (vector<Card*>::iterator itr = myhand.begin(); itr != myhand.end(); ++itr)
+		delete *itr;
+
+	myhand = {};
+
+}
+
+/*
 void play_game()
 
 {
@@ -309,12 +336,12 @@ void play_game()
 	cout << "Welcome to Siete y Medio!" << endl
 		<< "Enter your starting money: ";
 	cin >> starting_money;
-	
-	Player you (starting_money);  
+
+	Player you(starting_money);
 	Player dealer;
-	
+
 	do
-	{ 
+	{
 		cout << "You have $" << you.get_money() << ". Enter bet: ";
 		cin >> bet;
 		while (bet > you.get_money())
@@ -323,35 +350,52 @@ void play_game()
 			cin >> bet;
 		}
 
-		cout << "Your card:" << endl;
-		you.draw_card();
-
 		while (another_card == 'y')
 		{
-			
-			cout << "Your total is " << you.card_total() << endl << ". Do you want another card (y/n)? ";
+			cout << "Your cards: " << endl;
+			you.draw_card();
+			you.list_cards();
+
+			cout << "Your total is " << you.card_total() << "." << endl << "Do you want another card (y/n)? ";
 			cin >> another_card;
 			if (another_card == 'n')
-				return;
-			else
-			{
-				cout << "New card: " << endl;
-				you.draw_card();
-				cout << "Your cards:" << endl;
-				you.list_cards();
-			}
+				break;
 
 			if (you.check_lose())
 			{
 				cout << "Your total is " << you.card_total() << "You lost the round.";
 				you.lose_bet(bet);
+				break;
+			}
+
+		}
+
+
+		while (!you.check_lose())
+		{
+			while (dealer.card_total() < you.card_total())
+			{
+				cout << "Dealer's cards:" << endl;
+				dealer.draw_card();
+				dealer.list_cards();
+				cout << "The dealer's total is " << dealer.card_total() << endl;
+
+				if (dealer.check_lose())
+				{
+					cout << "Congratulations! You won $" << bet << "." << endl;
+					you.win_bet(bet);
+					break;
+				}
+				
+				else if (you.card_total() < dealer.card_total())
+				{
+					cout << "You lost the round. You lose $" << bet << "." << endl;
+					break;
+				}
 			}
 		}
-		
 
 
 	} while (you.check_end());
 }
-
-
-//*/
+*/

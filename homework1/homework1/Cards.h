@@ -59,15 +59,17 @@ public:
 	Player();
 	//constructor, assigns initial value of money
 	Player(int m);
-	double card_total();
+	double card_total() const;
 	void draw_card();
-	bool check_lose(); // check if lost round (ie. card total is more than 7.5)
-	bool check_end(); // check if end whole game
-	bool operator < (Player another); // compare who won between two players based on value of cards
-	int get_money();
+	void reset_cards();
+	bool check_lose() const; // check if lost round (ie. card total is more than 7.5)
+	bool check_end() const; // check if end whole game
+	bool operator < (Player another) const; // compare who won between two players based on value of cards
+	int get_money() const;
 	void win_bet(int a);
 	void lose_bet(int b);
-	void list_cards();
+	void list_cards() const;
+	
 
 private:
 	int money;
