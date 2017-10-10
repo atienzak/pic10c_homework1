@@ -36,10 +36,7 @@ void play_game()
 
 		another_card = 'y';
 
-		you.reset_cards();
-		dealer.reset_cards();
-
-		while (bet > you.get_money())
+		while (bet > you.get_money() || bet == 0)
 		{
 			cout << "Enter a valid bet: ";
 			cin >> bet;
@@ -52,7 +49,7 @@ void play_game()
 			you.draw_card();
 			you.list_cards();
 
-			cout << "\nYour total is " << you.card_total() << ". ";
+			cout << "Your total is " << you.card_total() << ". ";
 				
 			if (you.check_lose())
 			{
@@ -66,43 +63,46 @@ void play_game()
 			cout << "\n";
 
 			if (another_card == 'n')
-				break; // insert tie
+				break; 
 
 		}
 
-		while (!you.check_lose() && dealer.card_total() < you.card_total())
+		while (!you.check_lose() && dealer.card_total() <= you.card_total())
 		{
 		
-				cout << "\nDealer's cards:" << endl;
+				cout << "Dealer's cards:" << endl;
 				dealer.draw_card();
 				dealer.list_cards();
-				cout << "The dealer's total is " << dealer.card_total() << ".\n";
+				cout << "The dealer's total is " << dealer.card_total() << ".\n\n";
 
 				if (dealer.check_lose())
 				{
-					cout << "\nCongratulations! You won $" << bet << "." << "\n";
+					cout << "Congratulations! You won $" << bet << "." << "\n\n";
 					you.win_bet(bet);
 					break;
 				}
 
 				else if (you.card_total() < dealer.card_total())
 				{
-					cout << "You lost the round. You lose $" << bet << "." << "\n";
+					cout << "You lost the round. You lose $" << bet << "." << "\n\n";
 					you.lose_bet(bet);
 					break;
 				}
 
 				else if (you.card_total() == dealer.card_total())
 				{
-					cout << "\nIt's a tie!\n\n";
+					cout << "It's a tie!\n\n";
 					break;
 				}
 		}
 
 		if (you.check_end())
 		{
-			cout << "You are out of money. Goodbye!\n";
+			cout << "You are out of money. Goodbye!\n\n";
 		}
+
+		you.reset_cards(); // reset rounds 
+		dealer.reset_cards();
 
 	} while (!you.check_end());
 
