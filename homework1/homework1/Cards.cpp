@@ -316,6 +316,15 @@ void Player::list_cards() const // list cards in their names in spanish and engl
 	}
 }
 
+void Player::log_cards(ostream& ost) const
+{
+	for (const auto& x : myhand)
+	{
+		ost << "\t" << x->get_spanish_rank() << " de " << x->get_spanish_suit() << "\t ("
+			<< x->get_english_rank() << " of " << x->get_english_suit() << ")" << endl;
+	}
+}
+
 void Player::reset_cards()
 {
 	for (vector<Card*>::iterator itr = myhand.begin(); itr != myhand.end(); ++itr)

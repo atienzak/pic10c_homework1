@@ -69,6 +69,7 @@ public:
 	void win_bet(int a);
 	void lose_bet(int b);
 	void list_cards() const;
+	void log_cards(ostream& ost) const;
 	
 
 private:

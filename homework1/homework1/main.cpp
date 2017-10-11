@@ -13,12 +13,39 @@ void reset_round(int& bet, char& another_card)
 	another_card = 0;
 }
 
+void log_file(const Player& you, const Player& dealer, ofstream& ost, const int& bet, int& round_number)
+{
+	ost.open("log_file.txt", ios::app);
+
+	ost << "---------------------------------------------\n\nRound number: " << round_number
+		<< "\tMoney left: $" << you.get_money() + bet << "\nBet: $" << bet
+		<< "\n\nYour cards: \n";
+
+	you.log_cards(ost);
+
+	ost << "Your total: " << you.card_total() << ".\n\n";
+
+	if (dealer.card_total() != 0) // meaning that that player didn't go over 7.5
+	{
+		ost << "Dealer's cards: \n";
+
+		dealer.log_cards(ost);
+
+		ost << "Dealer's total is " << dealer.card_total() << ".\n";
+	}
+
+	ost.close();
+
+}
+
 void play_game()
 
 {
 	int starting_money = 0;
 	int bet = 0;
 	char another_card = ' ';
+	int round_number = 0; // for log file 
+	ofstream ost;
 
 	cout << "Welcome to Siete y Medio!\n" << endl
 		<< "Enter your starting money: ";
@@ -53,7 +80,7 @@ void play_game()
 				
 			if (you.check_lose())
 			{
-				cout << "You lost the round.";
+				cout << "You lost the round. You lose $" << bet << "." << "\n\n";
 				you.lose_bet(bet);
 				break;
 			}
@@ -100,6 +127,9 @@ void play_game()
 		{
 			cout << "You are out of money. Goodbye!\n\n";
 		}
+
+		round_number++;
+		log_file(you, dealer, ost, bet, round_number);
 
 		you.reset_cards(); // reset rounds 
 		dealer.reset_cards();
