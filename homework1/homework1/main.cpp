@@ -25,13 +25,13 @@ void log_file(const Player& you, const Player& dealer, ofstream& ost, const int&
 
 	ost << "Your total: " << you.card_total() << ".\n\n";
 
-	if (dealer.card_total() != 0) // meaning that that player didn't go over 7.5
+	if (dealer.card_total() != 0) // if the player went over 7.5 at the start of the round, then dealer wouldn't have any cards 
 	{
 		ost << "Dealer's cards: \n";
 
 		dealer.log_cards(ost);
 
-		ost << "Dealer's total is " << dealer.card_total() << ".\n";
+		ost << "Dealer's total: " << dealer.card_total() << ".\n";
 	}
 
 	ost.close();
