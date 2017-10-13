@@ -420,7 +420,7 @@ void log_file(const Player& you, const Player& dealer, ofstream& ost, const int&
 	ost.open("log_file.txt", ios::app);
 
 	ost << "---------------------------------------------\n\nRound number: " << round_number
-		<< "\tMoney left: $" << you.get_money() + bet << "\nBet: $" << bet
+		<< setw(15) << right << "\tMoney left: $" << you.get_money() << "\nBet: $" << bet
 		<< "\n\nYour cards: \n";
 
 	you.log_cards(ost);
@@ -450,7 +450,7 @@ void play_game(Player& you, Player& dealer)
 	int starting_money = 0;
 	int bet = 0;
 	char another_card = 'y';
-	int round_number = 0; 
+	int round_number = 1; 
 	ofstream ost; // used for logging into file; declared here so that it wouldn't create ostream onject repeatedly when log_file function is called
 
 	cout << "Welcome to Siete y Medio!\n" << endl
@@ -499,49 +499,44 @@ void play_game(Player& you, Player& dealer)
 
 		while (!you.check_lose() && dealer.card_total() <= you.card_total()) // if the player hasn't gone over 7.5 yet and
 																			 // the dealer's card hasn't gone over the player's total,
-																			 // then draw more cards
+																			 // then dealer would draw more cards
 		{
 			cout << "Dealer's cards:" << endl;
 			dealer.draw_card();
 			dealer.list_cards();
 			cout << "The dealer's total is " << dealer.card_total() << ".\n\n";
 
-			if (dealer.check_lose())
+			if (dealer.check_lose()) // if dealer goes over 7.5
 			{
 				cout << "Congratulations! You won $" << bet << "." << "\n\n";
+				log_file(you, dealer, ost, you.get_money(), round_number); // log the round before changing money
 				you.win_bet(bet);
 				break;
 			}
 
-			else if (you.card_total() < dealer.card_total())
+			else if (you.card_total() < dealer.card_total()) // dealer has more total
 			{
 				cout << "You lost the round. You lose $" << bet << "." << "\n\n";
+				log_file(you, dealer, ost, you.get_money(), round_number); // log the round before changing money
 				you.lose_bet(bet);
-				break;
-			}
-
-			else if (you.card_total() == dealer.card_total())
-			{
-				cout << "It's a tie!\n\n";
 				break;
 			}
 
 			cout << "The dealer is drawing another card...\n\n";
 		}
 
-		if (you.check_end())
+		if (you.check_end()) // if lost all money
 		{
 			cout << "You are out of money. Goodbye!\n\n";
 		}
 
 		round_number++;
-		log_file(you, dealer, ost, bet, round_number);
 
 		reset_round(bet, another_card);
 		you.reset_cards(); // reset rounds 
 		dealer.reset_cards();
 
-	} while (!you.check_end());
+	} while (!you.check_end()); // do while money is > 0
 
 
 }
